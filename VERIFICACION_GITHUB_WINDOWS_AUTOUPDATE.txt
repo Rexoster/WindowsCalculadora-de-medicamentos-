@@ -1,0 +1,44 @@
+VERIFICACIÓN - WINDOWS + GITHUB ACTIONS + AUTOACTUALIZACIÓN
+
+Fecha: 2026-06-18
+
+Se preparó el proyecto como repositorio nuevo con:
+
+1. Módulo Android existente conservado:
+   - app/
+
+2. Módulo Windows/Desktop conservado y ampliado:
+   - desktopApp/
+
+3. Actualizador Windows agregado:
+   - desktopApp/src/main/kotlin/com/luisangel/calculadoramedicamentos/updater/AppBuildInfo.kt
+   - desktopApp/src/main/kotlin/com/luisangel/calculadoramedicamentos/updater/UpdateChecker.kt
+   - desktopApp/src/main/kotlin/com/luisangel/calculadoramedicamentos/updater/WindowsUpdateInstaller.kt
+
+4. Interfaz Windows modificada:
+   - La sección Actualizaciones ahora consulta GitHub Releases.
+   - Compara versión instalada contra versión publicada.
+   - Descarga .msi/.exe.
+   - Abre el instalador en Windows.
+
+5. Gradle Desktop modificado:
+   - desktopApp/build.gradle.kts ahora genera app-build.properties en recursos.
+   - La versión se puede inyectar desde APP_VERSION_NAME.
+   - El repositorio de actualizaciones se inyecta desde APP_UPDATE_REPOSITORY.
+
+6. Workflows agregados:
+   - .github/workflows/windows-build.yml
+   - .github/workflows/windows-release.yml
+
+7. Documentación agregada:
+   - README.md
+   - SUBIR_A_GITHUB_DESDE_CERO.md
+   - ACTUALIZACIONES_WINDOWS_GITHUB.md
+
+8. Revisión ejecutada:
+   - scripts/preflight_source_checks.py
+   - Resultado: PRECHECK CORRECTO
+
+Nota importante:
+- No se integraron medicamentos desde PDF de enfermedades infecciosas, respetando la indicación del usuario para esta versión.
+- Para actualización automática sin autenticación, el repositorio donde estén los Releases debe ser público.

@@ -1,0 +1,26 @@
+VERIFICACIÓN WINDOWS v1
+
+Fecha: 2026-06-18
+Base usada: CalculadoraMedicamentosNativa_v22_1_tabla_limpia.zip
+
+Hecho:
+- Se agregó módulo :desktopApp para Windows con Kotlin + Compose Desktop.
+- Se mantuvo intacto el módulo Android :app.
+- Se conservaron medicamentos, filtros, dosis con unidad, adultos/pediátricos/adultos especiales, importación/exportación, percentiles, obstetricia, renal y tema claro/oscuro.
+- Se quitó la necesidad de Android Room/DataStore en Windows; se usa JSON/Properties local.
+- Familia, subgrupo y especialidades quedan para filtros, no como columnas principales.
+- No se integró el PDF de enfermedades infecciosas por indicación del usuario.
+
+Comprobaciones hechas en este entorno:
+- Revisión de estructura del ZIP original.
+- Revisión de que el módulo desktopApp no tenga imports Android.
+- Compilación local con kotlinc de motores puros: GrowthEngine, UltrasoundDating y RenalEngine.
+
+No comprobado aquí:
+- No se pudo ejecutar Gradle completo porque este entorno no tiene salida a internet para descargar Gradle/dependencias.
+- La compilación final del instalador .exe/.msi debe hacerse en Windows con internet la primera vez.
+
+Comandos esperados en Windows:
+- gradlew.bat :desktopApp:run
+- gradlew.bat :desktopApp:packageReleaseExe
+- gradlew.bat :desktopApp:packageReleaseMsi
