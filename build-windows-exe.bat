@@ -1,4 +1,4 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-call gradlew.bat :desktopApp:packageReleaseExe
+call gradlew.bat :desktopApp:packageExe
