@@ -73,9 +73,9 @@ jobs:
           if (-not $light) { throw "No se encontró WiX Toolset. Sin WiX, jpackage no genera .exe/.msi en Windows." }
           Write-Host "WiX disponible en: $($light.Source)"
 
-      - name: Compilar instaladores Windows
+      - name: Compilar instaladores Windows sin ProGuard
         shell: pwsh
-        run: .\gradlew.bat :desktopApp:packageReleaseExe :desktopApp:packageReleaseMsi --build-cache --stacktrace
+        run: .\gradlew.bat :desktopApp:packageExe :desktopApp:packageMsi --build-cache --stacktrace
 
       - name: Preparar archivos de actualización
         shell: pwsh
@@ -83,7 +83,7 @@ jobs:
           RELEASE_NOTES: ${{ inputs.release_notes }}
         run: |
           New-Item -ItemType Directory -Force -Path dist | Out-Null
-          $binaryRoot = "desktopApp\build\compose\binaries\main-release"
+          $binaryRoot = "desktopApp\build\compose\binaries"
           Get-ChildItem $binaryRoot -Recurse -File -Include *.msi,*.exe | Copy-Item -Destination dist
 
           $msi = Get-ChildItem dist -Filter *.msi | Select-Object -First 1

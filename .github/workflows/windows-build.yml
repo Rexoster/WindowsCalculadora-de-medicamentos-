@@ -46,18 +46,18 @@ jobs:
           if (-not $light) { throw "No se encontró WiX Toolset. Sin WiX, jpackage no genera .exe/.msi en Windows." }
           Write-Host "WiX disponible en: $($light.Source)"
 
-      - name: Compilar instaladores Windows
+      - name: Compilar instaladores Windows sin ProGuard
         shell: pwsh
         env:
           APP_VERSION_NAME: 3.1.${{ github.run_number }}
           APP_UPDATE_REPOSITORY: ${{ github.repository }}
-        run: .\gradlew.bat :desktopApp:packageReleaseExe :desktopApp:packageReleaseMsi --build-cache --stacktrace
+        run: .\gradlew.bat :desktopApp:packageExe :desktopApp:packageMsi --build-cache --stacktrace
 
       - name: Publicar instaladores de prueba
         uses: actions/upload-artifact@v4
         with:
           name: CalculadoraMedicamentos-Windows-prueba-${{ github.run_number }}
           path: |
-            desktopApp/build/compose/binaries/main-release/**/*.exe
-            desktopApp/build/compose/binaries/main-release/**/*.msi
+            desktopApp/build/compose/binaries/**/*.exe
+            desktopApp/build/compose/binaries/**/*.msi
           if-no-files-found: error
