@@ -1,0 +1,63 @@
+name: Windows - Compilar prueba
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Verificar WiX Toolset
+        shell: pwsh
+        run: |
+          $wixPaths = @(
+            "${env:ProgramFiles(x86)}\WiX Toolset v3.14\bin",
+            "${env:ProgramFiles(x86)}\WiX Toolset v3.11\bin"
+          )
+          foreach ($path in $wixPaths) {
+            if (Test-Path $path) { $env:PATH += ";$path" }
+          }
+          $light = Get-Command light.exe -ErrorAction SilentlyContinue
+          if (-not $light) {
+            choco install wixtoolset -y --no-progress
+            foreach ($path in $wixPaths) {
+              if (Test-Path $path) { $env:PATH += ";$path" }
+            }
+            $light = Get-Command light.exe -ErrorAction SilentlyContinue
+          }
+          if (-not $light) { throw "No se encontró WiX Toolset. Sin WiX, jpackage no genera .exe/.msi en Windows." }
+          Write-Host "WiX disponible en: $($light.Source)"
+
+      - name: Compilar instaladores Windows
+        shell: pwsh
+        env:
+          APP_VERSION_NAME: 3.1.${{ github.run_number }}
+          APP_UPDATE_REPOSITORY: ${{ github.repository }}
+        run: .\gradlew.bat :desktopApp:packageReleaseExe :desktopApp:packageReleaseMsi --build-cache --stacktrace
+
+      - name: Publicar instaladores de prueba
+        uses: actions/upload-artifact@v4
+        with:
+          name: CalculadoraMedicamentos-Windows-prueba-${{ github.run_number }}
+          path: |
+            desktopApp/build/compose/binaries/main-release/**/*.exe
+            desktopApp/build/compose/binaries/main-release/**/*.msi
+          if-no-files-found: error
