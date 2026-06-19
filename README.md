@@ -13,6 +13,7 @@ Lee primero:
 
 ```text
 SUBIR_A_GITHUB_DESDE_CERO.md
+MODO_REPOSITORIO_UNICO.md
 ```
 
 Sí, hay un manual. La civilización todavía depende de leer cuatro pasos antes de presionar botones.
@@ -52,7 +53,7 @@ El flujo preparado es:
 GitHub Actions compila → crea Release → sube .msi/.exe + update-windows.json → la app consulta GitHub → descarga e instala
 ```
 
-Importante: para que la app pueda consultar actualizaciones sin token, el repositorio donde estén los Releases debe ser **público**. Si el repo es privado, GitHub no entrega Releases a una app anónima. Meter un token dentro de la app sería esconder la llave bajo el tapete y luego sorprenderse porque alguien abrió la puerta.
+Importante: el proyecto queda en **un solo repositorio público**. Ese mismo repositorio contiene el código y los Releases. Si lo haces privado, la app Windows no podrá actualizarse sola sin autenticación. No se usa repositorio doble.
 
 ## Workflows incluidos
 

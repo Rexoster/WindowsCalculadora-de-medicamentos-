@@ -1,6 +1,6 @@
-# Subir este proyecto a GitHub desde cero
+# Subir este proyecto a GitHub desde cero, usando un solo repositorio
 
-Este ZIP está pensado para crear un repositorio nuevo y que GitHub compile la app de Windows automáticamente.
+Este ZIP está pensado para crear **un solo repositorio nuevo** y que GitHub compile la app de Windows automáticamente. No se usará repositorio doble.
 
 ## 1. Crear el repositorio
 
@@ -10,7 +10,7 @@ En GitHub crea un repositorio nuevo, por ejemplo:
 CalculadoraMedicamentos
 ```
 
-Recomendado para actualizaciones automáticas Windows:
+Para este modo elegido usa:
 
 ```text
 Repositorio público
@@ -163,6 +163,24 @@ desktopApp/src/main/kotlin/com/luisangel/calculadoramedicamentos/updater/Windows
 
 ## 10. Qué NO hacer
 
+No crees un segundo repositorio para Releases en esta versión.
+
 No metas un token de GitHub dentro de la app para leer un repo privado.
 
 Eso funciona técnicamente, igual que dejar una receta médica pegada en la puerta del consultorio también “funciona” para que todos la vean. No significa que sea buena idea.
+
+
+## 11. Confirmación del modo elegido
+
+Este paquete queda pensado para:
+
+```text
+Un solo repositorio público en GitHub
+Código + Actions + Releases en el mismo lugar
+```
+
+Archivo complementario:
+
+```text
+MODO_REPOSITORIO_UNICO.md
+```

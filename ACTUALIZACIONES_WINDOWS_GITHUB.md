@@ -1,5 +1,9 @@
 # Actualizaciones Windows con GitHub Releases
 
+## Modo configurado
+
+Se usa **un solo repositorio público**. El código, GitHub Actions y los Releases viven en el mismo repositorio.
+
 La app Windows usa este flujo:
 
 ```text

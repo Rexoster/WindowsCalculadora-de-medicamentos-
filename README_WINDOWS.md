@@ -98,4 +98,4 @@ update-windows.json
 
 La app prefiere `.msi` si existe; si no, usa `.exe`.
 
-Para que funcione sin login, el repositorio de Releases debe ser público.
+Para que funcione sin login, se usa **un solo repositorio público**. La app consulta los Releases del mismo repositorio donde vive el código.
