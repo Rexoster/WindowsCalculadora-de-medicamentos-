@@ -24,29 +24,33 @@ object WindowsUpdateInstaller {
                 error("La instalación automática solo aplica en Windows.")
             }
 
-            val updatesDir = AppPaths.dataDir.resolve("updates").toPath()
+            val updatesDir = AppPaths.dataDir.resolve("updates")
             Files.createDirectories(updatesDir)
+
             val safeName = update.fileName.replace(Regex("[^A-Za-z0-9._-]"), "_")
             val destination = updatesDir.resolve(safeName)
+            val destinationFile = destination.toFile()
 
             val request = HttpRequest.newBuilder(URI.create(update.downloadUrl))
                 .timeout(Duration.ofMinutes(10))
                 .header("User-Agent", "CalculadoraMedicamentos-Windows-Updater")
                 .GET()
                 .build()
+
             val response = client.send(request, HttpResponse.BodyHandlers.ofInputStream())
             if (response.statusCode() !in 200..299) {
                 error("No se pudo descargar el instalador. HTTP ${response.statusCode()}.")
             }
+
             response.body().use { input ->
                 Files.copy(input, destination, StandardCopyOption.REPLACE_EXISTING)
             }
 
-            ProcessBuilder("cmd", "/c", "start", "", destination.toAbsolutePath().toString())
-                .directory(AppPaths.dataDir)
+            ProcessBuilder("cmd", "/c", "start", "", destinationFile.absolutePath)
+                .directory(AppPaths.dataDir.toFile())
                 .start()
 
-            destination.toAbsolutePath().toString()
+            destinationFile.absolutePath
         }
     }
 }
